@@ -1,88 +1,77 @@
-// -----------------------------
-// Assignment01
-// -----------------------------
-module a1;
+module tb2           ;
+// ------------------------------------------------------------------
+// instances
+// ------------------------------------------------------------------
+reg   [3:0]   a        ;
+reg   [3:0]   b        ;
+reg           ci       ;
 
-parameter     N = 10       ;
+wire  [3:0]   s1       ;
+wire          co1      ;
+wire  [3:0]   s2       ;
+wire          co2      ;
 
-wire          q            ;
-wire          nq           ;
+fa4_inst      dut_1(   .s   ( s1    ),
+                       .co  ( co1   ),
+                       .a   ( a     ),
+                       .b   ( b     ),
+                       .ci  ( ci    ));
 
-reg           rst_n        ;
-reg           d            ;
-reg           clk          ;
+fa4_mbit      dut_2(   .s   ( s2    ),
+                       .co  ( co2   ),
+                       .a   ( a     ),
+                       .b   ( b     ),
+                       .ci  ( ci    ));
 
-initial       clk = 1'b0   ;
-initial       d = 1'b0     ;
-always #(2*N)  clk = ~clk  ;
-
-// -----------------
-// Instances
-// -----------------
-dff_sr        uo( .q       (  q      ),
-                  .nq      (  nq     ),
-                  .rst_n   (  rst_n  ),
-                  .d       (  d      ),
-                  .clk     (  clk    ));
-
-// -----------------
-// Stimulus
-// -----------------
+// --------------------------------------------------------------------
+// stimulus
+// --------------------------------------------------------------------
 initial begin
-#(N)    {rst_n, d} = 2'b00           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b01           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b11           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b10           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b10           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b00           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b01           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-$finish;
+    $display("Using Instances:  s1, co1");
+    $display("Using Multi-bit:  s2, co2");
+    $display("=========================================================");
+    $display("  ci  a  b  s1  co1  s2  co2");
+    $display("=========================================================");
+    #(50)   {ci, a, b} = $random();   #(50)   $display("  %d  %d  %d  %d  %d  %d  %d", ci, a, b, s1, co1, s2, co2);
+    #(50)   {ci, a, b} = $random();   #(50)   $display("  %d  %d  %d  %d  %d  %d  %d", ci, a, b, s1, co1, s2, co2);
+    #(50)   {ci, a, b} = $random();   #(50)   $display("  %d  %d  %d  %d  %d  %d  %d", ci, a, b, s1, co1, s2, co2);
+    #(50)   {ci, a, b} = $random();   #(50)   $display("  %d  %d  %d  %d  %d  %d  %d", ci, a, b, s1, co1, s2, co2);
+    #(50)   {ci, a, b} = $random();   #(50)   $display("  %d  %d  %d  %d  %d  %d  %d", ci, a, b, s1, co1, s2, co2);
+    #(50)   {ci, a, b} = $random();   #(50)   $display("  %d  %d  %d  %d  %d  %d  %d", ci, a, b, s1, co1, s2, co2);
+    #(50)   {ci, a, b} = $random();   #(50)   $display("  %d  %d  %d  %d  %d  %d  %d", ci, a, b, s1, co1, s2, co2);
+    #(50)   {ci, a, b} = $random();   #(50)   $display("  %d  %d  %d  %d  %d  %d  %d", ci, a, b, s1, co1, s2, co2);
+    #(50)   {ci, a, b} = $random();   #(50)   $display("  %d  %d  %d  %d  %d  %d  %d", ci, a, b, s1, co1, s2, co2);
+    #(50)   {ci, a, b} = $random();   #(50)   $display("  %d  %d  %d  %d  %d  %d  %d", ci, a, b, s1, co1, s2, co2);
+    #(50)   $finish;
 end
 
 endmodule
 
+module tb_cnt;
 
+parameter  N = 8;
+reg            clk     ;
+reg            rst_n   ;
+wire   [N-1:0]   cnt     ;
 
-// -----------------------------
-// Assignment02
-// -----------------------------
-module a2;
+counter dut(
+               .cnt    ( cnt    ),
+               .clk    ( clk    ),
+               .rst_n  ( rst_n  ));
 
-parameter      N = 10           ;
-
-wire [3:0]     q                ;
-wire [3:0]     nq               ;
-
-reg            rst_n            ;
-reg            d                ;
-reg            clk              ;
-
-initial        clk = 1'b0       ;
-initial        d = 1'b0         ;
-initial        rst_n = 1'b0     ;
-always #(2*N)  clk = ~clk       ;
-
-// ---------------------------------------
-// Instances
-// ---------------------------------------
-cnt_dff        cnt_u0( .q     ( q     ),
-                       .nq    ( nq    ),
-                       .rst_n ( rst_n ),
-                       .d     ( d     ),
-                       .clk   ( clk   ));
-
-// ---------------------------------------
-// Stimulus
-// ---------------------------------------
 initial begin
-#(N)    {rst_n, d} = 2'b00           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b01           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b11           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b10           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b10           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b00           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-#(N)    {rst_n, d} = 2'b01           ;     #(N)    $display(" rst_n =%b, clk = %b, D = %b, Q = %b", rst_n, clk, d, q);
-$finish;
+    clk = 1'b0;
+end
+
+always begin
+    #(10) clk = ~clk;
+end
+
+initial begin
+    rst_n = 1'b0;
+#(10)
+    rst_n = 1'b1;
+#(1000) $finish;
 end
 
 endmodule
